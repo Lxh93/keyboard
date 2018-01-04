@@ -4,7 +4,7 @@
 //  初始化一个键盘控制器
 //  Created by JinShiJinSheng on 2018/1/4.
 //  Copyright © 2018年 JinShiJinSheng. All rights reserved.
-//
+//  git@github.com:Lxh93/keyboard.git
 
 import UIKit
 
@@ -37,7 +37,7 @@ class LXHEmoticonViewController: UIViewController {
         cons += NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[toolBar]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
         
         cons += NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[collectionView]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
-        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:[collectionView(>=\(3*width))]-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
+        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:[collectionView(\(3*width+3))]-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
         
         view.addConstraints(cons)
     }
@@ -65,7 +65,7 @@ class LXHEmoticonViewController: UIViewController {
         bar.items = items
         return bar
     }()
-    
+    private lazy var packages: [LXHEmoticonPackage] = LXHEmoticonPackage.loadPackage()
     @objc func itemClick(item: UIBarButtonItem)
     {
         
@@ -77,7 +77,24 @@ class LXHEmoticonCell: UICollectionViewCell {
         setupUI()
     }
     
-    
+    var emoticon: LXHEmoticon?
+    {
+        didSet{
+            // 1.判断是否是图片表情
+            if emoticon!.chs != nil
+            {
+                imgBtn.setImage(UIImage(contentsOfFile: emoticon!.imagePath!), for: .normal)
+            }else
+            {
+                // 防止重用
+                imgBtn.setImage(nil, for: .normal)
+            }
+            
+            // 2.设置emoji表情
+            // 注意: 加上??可以防止重用
+            imgBtn.setTitle(emoticon!.emojiStr ?? "", for: .normal)
+        }
+    }
     private func setupUI(){
         contentView.addSubview(imgBtn)
     }
@@ -103,20 +120,27 @@ class LXHemoticonLayout: UICollectionViewFlowLayout {
         collectionView?.showsVerticalScrollIndicator = false
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.isPagingEnabled = true
-        
-        let offY = (collectionView!.bounds.height - 3*width)*0.5
+        //设置0.5在5s等小屏机型上可能会出问题
+        let offY = (collectionView!.bounds.height - 3*width)*0.49
         
         collectionView?.contentInset = UIEdgeInsetsMake(offY, 0, offY, 0)
     }
 }
 extension LXHEmoticonViewController:UICollectionViewDataSource
 {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return packages.count
+    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 21*4
+        return packages[section].emoticons?.count ?? 0
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: lxhEmoticonCell, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: lxhEmoticonCell, for: indexPath) as! LXHEmoticonCell
+        cell.backgroundColor = (indexPath.item % 2 == 0) ? UIColor.red : UIColor.green
+        let package = packages[indexPath.section]
+        let emoticon = package.emoticons![indexPath.item]
+        cell.emoticon = emoticon
         
         return cell
     }
