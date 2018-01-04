@@ -5,7 +5,9 @@
 //  Created by JinShiJinSheng on 2018/1/4.
 //  Copyright © 2018年 JinShiJinSheng. All rights reserved.
 //  git@github.com:Lxh93/keyboard.git
-
+//1.完成表情的显示
+//2.追加空白按钮及删除的按钮
+//3.添加最近使用的表情组
 import UIKit
 
 let lxhEmoticonCell = "lxhEmoticonCell"
@@ -93,6 +95,12 @@ class LXHEmoticonCell: UICollectionViewCell {
             // 2.设置emoji表情
             // 注意: 加上??可以防止重用
             imgBtn.setTitle(emoticon!.emojiStr ?? "", for: .normal)
+            // 3.判断是否是删除按钮
+            if emoticon!.isRemoveButton
+            {
+                imgBtn.setImage(UIImage(named: "compose_emotion_delete"), for: .normal)
+                imgBtn.setImage(UIImage(named: "compose_emotion_delete_highlighted"), for: .highlighted)
+            }
         }
     }
     private func setupUI(){
@@ -103,6 +111,7 @@ class LXHEmoticonCell: UICollectionViewCell {
         let btn = UIButton.init(type: UIButtonType.custom)
         btn.frame = contentView.bounds.insetBy(dx: 4, dy: 4)
         btn.backgroundColor = UIColor.white
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 32)
         return btn
     }()
     required init?(coder aDecoder: NSCoder) {
@@ -140,6 +149,7 @@ extension LXHEmoticonViewController:UICollectionViewDataSource
         cell.backgroundColor = (indexPath.item % 2 == 0) ? UIColor.red : UIColor.green
         let package = packages[indexPath.section]
         let emoticon = package.emoticons![indexPath.item]
+        
         cell.emoticon = emoticon
         
         return cell

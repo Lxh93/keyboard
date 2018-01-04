@@ -17,6 +17,7 @@ class LXHEmoticonPackage: NSObject {
     var emoticons: [LXHEmoticon]?
     
     init(id: String) {
+        
         self.id = id
     }
     ///获取微博表情的主路径
@@ -34,11 +35,21 @@ class LXHEmoticonPackage: NSObject {
         group_name_cn = emoticonDic["group_name_cn"] as? String
         let dicArr = emoticonDic["emoticons"] as! [[String: String]]
         emoticons = [LXHEmoticon]()
+        
+        var index = 0
         for dic in dicArr {
+            if index == 20
+            {
+                print("添加删除")
+                emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
+                index = 0
+            }
             emoticons?.append(LXHEmoticon.init(dict: dic, id: id!))
+            index += 1
         }
     }
     class func loadPackage() -> [LXHEmoticonPackage] {
+        
         let path = Bundle.main.path(forResource: "emoticons.plist", ofType: nil, inDirectory: "Emoticons.bundle")
         
         let dic = NSDictionary.init(contentsOfFile: path!)
@@ -46,14 +57,44 @@ class LXHEmoticonPackage: NSObject {
         let dicArr = dic!["packages"] as! [[String: AnyObject]]
         
         var packages = [LXHEmoticonPackage]()
+        //最近使用的表情
+        let package = LXHEmoticonPackage.init(id: "")
+        package.group_name_cn = "最近"
+        package.emoticons = [LXHEmoticon]()
+        package.appendEmtyEmoticons()
+        packages.append(package)
         
         for dict in dicArr {
             
             let package = LXHEmoticonPackage.init(id: dict["id"] as! String)
+            
             package.loadEmoticons()
             packages.append(package)
+            package.appendEmtyEmoticons()
         }
         return packages
+    }
+    /**
+     追加空白按钮
+     如果一页不足21个,那么就添加一些空白按钮补齐
+     */
+    func appendEmtyEmoticons()
+    {
+        print(emoticons?.count)
+        let count = emoticons!.count % 21
+        print("count = \(count)")
+        
+        // 追加空白按钮
+        for _ in count..<20
+        {
+            // 追加空白按钮
+            emoticons?.append(LXHEmoticon.init(isRemoveButton: false))
+        }
+        // 追加一个删除按钮
+        emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
+        
+        print(emoticons?.count)
+        print("---------")
     }
 }
 class LXHEmoticon: NSObject {
@@ -63,20 +104,24 @@ class LXHEmoticon: NSObject {
     var png: String?
     {
         didSet{
+            /*
             imagePath = (LXHEmoticonPackage.emoticonPath().appendingPathComponent(id!) as NSString).appendingPathComponent(png!)
+             */
         }
     }
     ///emoji表情对应的十六进制字符串
     var code: String?
     {
         didSet{
+            /*
             //创建一个扫描器，扫描器可以从字符串中提取我们想要的数据
-            let scanner = Scanner.init(string: code!)
+            let scanner = Scanner.init(string: code)
             //将十六进制转换为字符串
             var result:UInt32 = 0
             scanner.scanHexInt32(&result)
             //将十六进制转换为emoji字符串
             emojiStr = "\(Character(UnicodeScalar(result)!))"
+            */
         }
     }
     
@@ -86,10 +131,32 @@ class LXHEmoticon: NSObject {
     ///表情图片的全路径
     var imagePath: String?
     
+    var isRemoveButton: Bool = false
+    
+    
     init(dict: [String: String],id: String) {
         super.init()
         self.id = id
-        setValuesForKeys(dict)
+        chs = dict["chs"]
+        if dict["code"] != nil {
+            
+            code = dict["code"]!
+            //创建一个扫描器，扫描器可以从字符串中提取我们想要的数据
+            let scanner = Scanner.init(string: code!)
+            //将十六进制转换为字符串
+            var result:UInt32 = 0
+            scanner.scanHexInt32(&result)
+            //将十六进制转换为emoji字符串
+            emojiStr = "\(Character(UnicodeScalar(result)!))"
+        }
+        if dict["png"] != nil {
+            png = dict["png"]
+            imagePath = (LXHEmoticonPackage.emoticonPath().appendingPathComponent(id) as NSString).appendingPathComponent(png!)
+        }
+    }
+    init(isRemoveButton: Bool) {
+        super.init()
+        self.isRemoveButton = isRemoveButton
     }
     override func setValue(_ value: Any?, forUndefinedKey key: String) {
         print(key,value as Any)
