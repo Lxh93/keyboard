@@ -7,25 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DA23CABF1FFDDCA400636084 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA23CABE1FFDDCA400636084 /* AppDelegate.swift */; };
-		DA23CAC11FFDDCA400636084 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA23CAC01FFDDCA400636084 /* ViewController.swift */; };
-		DA23CAC41FFDDCA400636084 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA23CAC21FFDDCA400636084 /* Main.storyboard */; };
-		DA23CAC61FFDDCA400636084 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA23CAC51FFDDCA400636084 /* Assets.xcassets */; };
-		DA23CAC91FFDDCA400636084 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA23CAC71FFDDCA400636084 /* LaunchScreen.storyboard */; };
-		DA23CAD21FFDDD4500636084 /* Emoticons.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA23CAD11FFDDD4500636084 /* Emoticons.bundle */; };
-		DA23CAD41FFDDDE000636084 /* LXHEmoticonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA23CAD31FFDDDE000636084 /* LXHEmoticonViewController.swift */; };
+		DAD4E7281FFE19DF00AC3D76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD4E71D1FFE19DF00AC3D76 /* AppDelegate.swift */; };
+		DAD4E7291FFE19DF00AC3D76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAD4E71E1FFE19DF00AC3D76 /* Assets.xcassets */; };
+		DAD4E72A1FFE19DF00AC3D76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAD4E71F1FFE19DF00AC3D76 /* LaunchScreen.storyboard */; };
+		DAD4E72B1FFE19DF00AC3D76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAD4E7211FFE19DF00AC3D76 /* Main.storyboard */; };
+		DAD4E72C1FFE19DF00AC3D76 /* Emoticons.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DAD4E7241FFE19DF00AC3D76 /* Emoticons.bundle */; };
+		DAD4E72D1FFE19DF00AC3D76 /* LXHEmoticonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD4E7251FFE19DF00AC3D76 /* LXHEmoticonViewController.swift */; };
+		DAD4E72F1FFE19DF00AC3D76 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD4E7271FFE19DF00AC3D76 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		DA23CABB1FFDDCA400636084 /* 键盘.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "键盘.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DA23CABE1FFDDCA400636084 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DA23CAC01FFDDCA400636084 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		DA23CAC31FFDDCA400636084 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		DA23CAC51FFDDCA400636084 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		DA23CAC81FFDDCA400636084 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		DA23CACA1FFDDCA500636084 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DA23CAD11FFDDD4500636084 /* Emoticons.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Emoticons.bundle; sourceTree = "<group>"; };
-		DA23CAD31FFDDDE000636084 /* LXHEmoticonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LXHEmoticonViewController.swift; sourceTree = "<group>"; };
+		DA23CABB1FFDDCA400636084 /* keyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keyboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAD4E71D1FFE19DF00AC3D76 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DAD4E71E1FFE19DF00AC3D76 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DAD4E7201FFE19DF00AC3D76 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		DAD4E7221FFE19DF00AC3D76 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DAD4E7241FFE19DF00AC3D76 /* Emoticons.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Emoticons.bundle; sourceTree = "<group>"; };
+		DAD4E7251FFE19DF00AC3D76 /* LXHEmoticonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LXHEmoticonViewController.swift; sourceTree = "<group>"; };
+		DAD4E7261FFE19DF00AC3D76 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DAD4E7271FFE19DF00AC3D76 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,7 +42,7 @@
 		DA23CAB21FFDDCA400636084 = {
 			isa = PBXGroup;
 			children = (
-				DA23CABD1FFDDCA400636084 /* 键盘 */,
+				DAD4E71C1FFE19DF00AC3D76 /* keyboard */,
 				DA23CABC1FFDDCA400636084 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,30 +50,30 @@
 		DA23CABC1FFDDCA400636084 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DA23CABB1FFDDCA400636084 /* 键盘.app */,
+				DA23CABB1FFDDCA400636084 /* keyboard.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DA23CABD1FFDDCA400636084 /* 键盘 */ = {
+		DAD4E71C1FFE19DF00AC3D76 /* keyboard */ = {
 			isa = PBXGroup;
 			children = (
-				DA23CAD01FFDDD3400636084 /* EmoticonView */,
-				DA23CABE1FFDDCA400636084 /* AppDelegate.swift */,
-				DA23CAC01FFDDCA400636084 /* ViewController.swift */,
-				DA23CAC21FFDDCA400636084 /* Main.storyboard */,
-				DA23CAC51FFDDCA400636084 /* Assets.xcassets */,
-				DA23CAC71FFDDCA400636084 /* LaunchScreen.storyboard */,
-				DA23CACA1FFDDCA500636084 /* Info.plist */,
+				DAD4E7231FFE19DF00AC3D76 /* EmoticonView */,
+				DAD4E71D1FFE19DF00AC3D76 /* AppDelegate.swift */,
+				DAD4E71E1FFE19DF00AC3D76 /* Assets.xcassets */,
+				DAD4E71F1FFE19DF00AC3D76 /* LaunchScreen.storyboard */,
+				DAD4E7211FFE19DF00AC3D76 /* Main.storyboard */,
+				DAD4E7261FFE19DF00AC3D76 /* Info.plist */,
+				DAD4E7271FFE19DF00AC3D76 /* ViewController.swift */,
 			);
-			path = "键盘";
+			path = keyboard;
 			sourceTree = "<group>";
 		};
-		DA23CAD01FFDDD3400636084 /* EmoticonView */ = {
+		DAD4E7231FFE19DF00AC3D76 /* EmoticonView */ = {
 			isa = PBXGroup;
 			children = (
-				DA23CAD31FFDDDE000636084 /* LXHEmoticonViewController.swift */,
-				DA23CAD11FFDDD4500636084 /* Emoticons.bundle */,
+				DAD4E7251FFE19DF00AC3D76 /* LXHEmoticonViewController.swift */,
+				DAD4E7241FFE19DF00AC3D76 /* Emoticons.bundle */,
 			);
 			path = EmoticonView;
 			sourceTree = "<group>";
@@ -81,9 +81,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DA23CABA1FFDDCA400636084 /* 键盘 */ = {
+		DA23CABA1FFDDCA400636084 /* keyboard */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DA23CACD1FFDDCA500636084 /* Build configuration list for PBXNativeTarget "键盘" */;
+			buildConfigurationList = DA23CACD1FFDDCA500636084 /* Build configuration list for PBXNativeTarget "keyboard" */;
 			buildPhases = (
 				DA23CAB71FFDDCA400636084 /* Sources */,
 				DA23CAB81FFDDCA400636084 /* Frameworks */,
@@ -93,9 +93,9 @@
 			);
 			dependencies = (
 			);
-			name = "键盘";
+			name = keyboard;
 			productName = "键盘";
-			productReference = DA23CABB1FFDDCA400636084 /* 键盘.app */;
+			productReference = DA23CABB1FFDDCA400636084 /* keyboard.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -115,7 +115,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DA23CAB61FFDDCA400636084 /* Build configuration list for PBXProject "键盘" */;
+			buildConfigurationList = DA23CAB61FFDDCA400636084 /* Build configuration list for PBXProject "keyboard" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -128,7 +128,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DA23CABA1FFDDCA400636084 /* 键盘 */,
+				DA23CABA1FFDDCA400636084 /* keyboard */,
 			);
 		};
 /* End PBXProject section */
@@ -138,10 +138,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA23CAC91FFDDCA400636084 /* LaunchScreen.storyboard in Resources */,
-				DA23CAD21FFDDD4500636084 /* Emoticons.bundle in Resources */,
-				DA23CAC61FFDDCA400636084 /* Assets.xcassets in Resources */,
-				DA23CAC41FFDDCA400636084 /* Main.storyboard in Resources */,
+				DAD4E72B1FFE19DF00AC3D76 /* Main.storyboard in Resources */,
+				DAD4E72C1FFE19DF00AC3D76 /* Emoticons.bundle in Resources */,
+				DAD4E72A1FFE19DF00AC3D76 /* LaunchScreen.storyboard in Resources */,
+				DAD4E7291FFE19DF00AC3D76 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,29 +152,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA23CAC11FFDDCA400636084 /* ViewController.swift in Sources */,
-				DA23CAD41FFDDDE000636084 /* LXHEmoticonViewController.swift in Sources */,
-				DA23CABF1FFDDCA400636084 /* AppDelegate.swift in Sources */,
+				DAD4E72F1FFE19DF00AC3D76 /* ViewController.swift in Sources */,
+				DAD4E7281FFE19DF00AC3D76 /* AppDelegate.swift in Sources */,
+				DAD4E72D1FFE19DF00AC3D76 /* LXHEmoticonViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		DA23CAC21FFDDCA400636084 /* Main.storyboard */ = {
+		DAD4E71F1FFE19DF00AC3D76 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DA23CAC31FFDDCA400636084 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		DA23CAC71FFDDCA400636084 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DA23CAC81FFDDCA400636084 /* Base */,
+				DAD4E7201FFE19DF00AC3D76 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		DAD4E7211FFE19DF00AC3D76 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DAD4E7221FFE19DF00AC3D76 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -293,7 +293,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RZ3EN463SX;
-				INFOPLIST_FILE = "键盘/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/keyboard/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "-0086.--";
@@ -309,7 +309,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RZ3EN463SX;
-				INFOPLIST_FILE = "键盘/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/keyboard/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "-0086.--";
@@ -322,7 +322,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DA23CAB61FFDDCA400636084 /* Build configuration list for PBXProject "键盘" */ = {
+		DA23CAB61FFDDCA400636084 /* Build configuration list for PBXProject "keyboard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA23CACB1FFDDCA500636084 /* Debug */,
@@ -331,7 +331,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DA23CACD1FFDDCA500636084 /* Build configuration list for PBXNativeTarget "键盘" */ = {
+		DA23CACD1FFDDCA500636084 /* Build configuration list for PBXNativeTarget "keyboard" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DA23CACE1FFDDCA500636084 /* Debug */,
