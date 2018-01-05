@@ -16,13 +16,23 @@ let lxhEmoticonCell = "lxhEmoticonCell"
 
 //let width = UIScreen.main.bounds.width/7
 
+
 class LXHEmoticonViewController: UIViewController {
+    
+    var emoticonBlock: (_ emoticon:LXHEmoticon)->()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
     }
+    init(emoticon:  @escaping (_ emoticon:LXHEmoticon)->()) {
+        
+        emoticonBlock = emoticon
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     
     private func setupUI()
     {
@@ -82,12 +92,14 @@ class LXHEmoticonViewController: UIViewController {
     {
         let index = item.tag - 10
         
-        let indexPath = IndexPath.init(item: itemCounts[index], section: index)
+        let indexPath = IndexPath.init(item: itemCounts[index] * 21, section: index)
         
         collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
         
     }
-    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 class LXHEmoticonCell: UICollectionViewCell {
     override init(frame: CGRect) {
@@ -126,6 +138,7 @@ class LXHEmoticonCell: UICollectionViewCell {
         
         let btn = UIButton.init(type: UIButtonType.custom)
         btn.frame = contentView.bounds.insetBy(dx: 4, dy: 4)
+        btn.isUserInteractionEnabled = false
         btn.backgroundColor = UIColor.white
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 32)
         return btn
@@ -173,12 +186,14 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
         
         return cell
     }
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-    }
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let emoticon = packages[indexPath.section].emoticons![indexPath.item]
         
+        emoticonBlock(emoticon)
     }
+    
+    //利用该方法只在手动滑动界面时才会调用（点击按钮改变contentOffset不会触发该方法）去记录滑动到表情包的第几页
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         let index: NSInteger = NSInteger(scrollView.contentOffset.x/collectionView.bounds.size.width)
@@ -193,20 +208,20 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
         
         if index < emoticons1 {
             //记录滑动到最近表情的第几页表情
-            itemCounts[0] = index * 21
+            itemCounts[0] = index
             
         }else if emoticons1 <= index && index < emoticons2+emoticons1{
             //记录滑动到默认表情的第几页表情
-            itemCounts[1] = (index - emoticons1) * 21
+            itemCounts[1] = index - emoticons1
             
         }else if emoticons2 <= index && index < emoticons3+emoticons2+emoticons1{
             //记录滑动到emoji表情的第几页表情
-            itemCounts[2] = (index - emoticons1 - emoticons2) * 21
+            itemCounts[2] = index - emoticons1 - emoticons2
             
         }else if emoticons3 <= index && index < emoticons4+emoticons3+emoticons2+emoticons1{
             //记录滑动到浪小花表情的第几页表情
-            itemCounts[3] = (index - emoticons1 - emoticons2 - emoticons3) * 21
+            itemCounts[3] = index - emoticons1 - emoticons2 - emoticons3
         }
-        print(index,itemCounts)
+        
     }
 }
