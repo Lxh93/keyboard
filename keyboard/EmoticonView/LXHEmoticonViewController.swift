@@ -53,6 +53,7 @@ class LXHEmoticonViewController: UIViewController {
         let clv = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: LXHemoticonLayout())
         clv.register(LXHEmoticonCell.self, forCellWithReuseIdentifier: lxhEmoticonCell)
         clv.dataSource = self
+        clv.delegate = self
         return clv
     }()
     private lazy var toolBar:UIToolbar = {
@@ -74,12 +75,18 @@ class LXHEmoticonViewController: UIViewController {
         bar.items = items
         return bar
     }()
+    var itemCounts: [NSInteger] = [0,0,0,0]
+    
     private lazy var packages: [LXHEmoticonPackage] = LXHEmoticonPackage.loadPackage()
     @objc func itemClick(item: UIBarButtonItem)
     {
+        let index = item.tag - 10
+        
+        let indexPath = IndexPath.init(item: itemCounts[index], section: index)
+        
+        collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
         
     }
-    
     
 }
 class LXHEmoticonCell: UICollectionViewCell {
@@ -147,7 +154,7 @@ class LXHemoticonLayout: UICollectionViewFlowLayout {
         collectionView?.contentInset = UIEdgeInsetsMake(offY, 0, offY, 0)
     }
 }
-extension LXHEmoticonViewController:UICollectionViewDataSource
+extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewDelegate
 {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return packages.count
@@ -165,5 +172,41 @@ extension LXHEmoticonViewController:UICollectionViewDataSource
         cell.emoticon = emoticon
         
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        let index: NSInteger = NSInteger(scrollView.contentOffset.x/collectionView.bounds.size.width)
+        //最近使用的表情有几页
+        let emoticons1 = packages[0].emoticons!.count/21
+        //默认的表情有几页
+        let emoticons2 = packages[1].emoticons!.count/21
+        //emoji的表情有几页
+        let emoticons3 = packages[2].emoticons!.count/21
+        //浪小花的表情有几页
+        let emoticons4 = packages[3].emoticons!.count/21
+        
+        if index < emoticons1 {
+            //记录滑动到最近表情的第几页表情
+            itemCounts[0] = index * 21
+            
+        }else if emoticons1 <= index && index < emoticons2+emoticons1{
+            //记录滑动到默认表情的第几页表情
+            itemCounts[1] = (index - emoticons1) * 21
+            
+        }else if emoticons2 <= index && index < emoticons3+emoticons2+emoticons1{
+            //记录滑动到emoji表情的第几页表情
+            itemCounts[2] = (index - emoticons1 - emoticons2) * 21
+            
+        }else if emoticons3 <= index && index < emoticons4+emoticons3+emoticons2+emoticons1{
+            //记录滑动到浪小花表情的第几页表情
+            itemCounts[3] = (index - emoticons1 - emoticons2 - emoticons3) * 21
+        }
+        print(index,itemCounts)
     }
 }
