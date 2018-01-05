@@ -40,7 +40,6 @@ class LXHEmoticonPackage: NSObject {
         for dic in dicArr {
             if index == 20
             {
-                print("添加删除")
                 emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
                 index = 0
             }
@@ -80,9 +79,8 @@ class LXHEmoticonPackage: NSObject {
      */
     func appendEmtyEmoticons()
     {
-        print(emoticons?.count)
+        
         let count = emoticons!.count % 21
-        print("count = \(count)")
         
         // 追加空白按钮
         for _ in count..<20
@@ -93,8 +91,6 @@ class LXHEmoticonPackage: NSObject {
         // 追加一个删除按钮
         emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
         
-        print(emoticons?.count)
-        print("---------")
     }
 }
 class LXHEmoticon: NSObject {

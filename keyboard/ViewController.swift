@@ -18,7 +18,11 @@ class ViewController: UIViewController {
         
     }
 
-    private lazy var emoticonVC:LXHEmoticonViewController = LXHEmoticonViewController()
+    private lazy var emoticonVC:LXHEmoticonViewController = {
+       let eVC = LXHEmoticonViewController()
+        
+        return eVC
+    }()
 
 
 }

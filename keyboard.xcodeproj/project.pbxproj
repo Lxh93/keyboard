@@ -62,11 +62,11 @@
 			children = (
 				DAD4E7231FFE19DF00AC3D76 /* EmoticonView */,
 				DAD4E71D1FFE19DF00AC3D76 /* AppDelegate.swift */,
+				DAD4E7271FFE19DF00AC3D76 /* ViewController.swift */,
 				DAD4E71E1FFE19DF00AC3D76 /* Assets.xcassets */,
 				DAD4E71F1FFE19DF00AC3D76 /* LaunchScreen.storyboard */,
 				DAD4E7211FFE19DF00AC3D76 /* Main.storyboard */,
 				DAD4E7261FFE19DF00AC3D76 /* Info.plist */,
-				DAD4E7271FFE19DF00AC3D76 /* ViewController.swift */,
 			);
 			path = keyboard;
 			sourceTree = "<group>";

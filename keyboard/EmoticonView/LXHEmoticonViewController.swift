@@ -10,17 +10,20 @@
 //3.添加最近使用的表情组
 import UIKit
 
+let sBounds = UIScreen.main.bounds
+
 let lxhEmoticonCell = "lxhEmoticonCell"
 
-let width = UIScreen.main.bounds.width/7
+//let width = UIScreen.main.bounds.width/7
 
 class LXHEmoticonViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("初始化一个键盘控制器")
         setupUI()
     }
+    
     private func setupUI()
     {
         view.backgroundColor = UIColor.red
@@ -32,6 +35,7 @@ class LXHEmoticonViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         toolBar.translatesAutoresizingMaskIntoConstraints = false
         
+//        let width = self.view.frame.size.width/7
         var cons = [NSLayoutConstraint]()
         
         let dic = ["collectionView":collectionView,"toolBar":toolBar] as [String : Any]
@@ -39,7 +43,9 @@ class LXHEmoticonViewController: UIViewController {
         cons += NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[toolBar]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
         
         cons += NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[collectionView]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
-        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:[collectionView(\(3*width+3))]-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
+        
+//        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:[collectionView(\(3*width+3))]-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
+        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[collectionView]-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
         
         view.addConstraints(cons)
     }
@@ -55,9 +61,10 @@ class LXHEmoticonViewController: UIViewController {
         
         var index = 0
         var items = [UIBarButtonItem]()
-        for title in ["最近","默认","emoji","浪小花"]
+        
+        for title in packages
         {
-            let item = UIBarButtonItem.init(title: title, style: UIBarButtonItemStyle.plain, target: self, action: #selector(itemClick(item:)))
+            let item = UIBarButtonItem.init(title: title.group_name_cn, style: UIBarButtonItemStyle.plain, target: self, action: #selector(itemClick(item:)))
             item.tag = 10 + index
             index += 1
             items.append(item)
@@ -72,6 +79,8 @@ class LXHEmoticonViewController: UIViewController {
     {
         
     }
+    
+    
 }
 class LXHEmoticonCell: UICollectionViewCell {
     override init(frame: CGRect) {
@@ -121,8 +130,10 @@ class LXHEmoticonCell: UICollectionViewCell {
 class LXHemoticonLayout: UICollectionViewFlowLayout {
     override func prepare() {
         super.prepare()
+        let width = collectionView!.bounds.size.width/7
         
         itemSize = CGSize.init(width: width, height: width)
+        
         minimumLineSpacing = 0
         minimumInteritemSpacing = 0
         scrollDirection = UICollectionViewScrollDirection.horizontal
@@ -130,6 +141,7 @@ class LXHemoticonLayout: UICollectionViewFlowLayout {
         collectionView?.showsHorizontalScrollIndicator = false
         collectionView?.isPagingEnabled = true
         //设置0.5在5s等小屏机型上可能会出问题
+        
         let offY = (collectionView!.bounds.height - 3*width)*0.49
         
         collectionView?.contentInset = UIEdgeInsetsMake(offY, 0, offY, 0)
