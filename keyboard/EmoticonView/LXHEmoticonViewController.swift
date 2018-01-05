@@ -20,7 +20,7 @@ class LXHEmoticonViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("初始化一个键盘控制器")
+        
         setupUI()
     }
     
