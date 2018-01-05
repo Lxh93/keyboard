@@ -163,8 +163,8 @@ class LXHemoticonLayout: UICollectionViewFlowLayout {
         //设置0.5在5s等小屏机型上可能会出问题
         
         let offY = (collectionView!.bounds.height - 3*width)*0.49
-        
-        collectionView?.contentInset = UIEdgeInsetsMake(offY, 0, offY, 0)
+        self.sectionInset = UIEdgeInsetsMake(offY, 0, offY, 0)
+//        collectionView?.contentInset = UIEdgeInsetsMake(offY, 0, offY, 0)
     }
 }
 extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewDelegate
