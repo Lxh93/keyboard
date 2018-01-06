@@ -30,6 +30,7 @@ class LXHEmoticonViewController: UIViewController {
     init(emoticon:  @escaping (_ emoticon:LXHEmoticon)->()) {
         
         emoticonBlock = emoticon
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -60,10 +61,11 @@ class LXHEmoticonViewController: UIViewController {
         view.addConstraints(cons)
     }
     private lazy var collectionView:UICollectionView = {
-        let clv = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: LXHemoticonLayout())
+        let clv = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: emoticonLayout)
         clv.register(LXHEmoticonCell.self, forCellWithReuseIdentifier: lxhEmoticonCell)
         clv.dataSource = self
         clv.delegate = self
+//        clv.backgroundColor = UIColor.red
         return clv
     }()
     private lazy var toolBar:UIToolbar = {
@@ -86,7 +88,11 @@ class LXHEmoticonViewController: UIViewController {
         return bar
     }()
     var itemCounts: [NSInteger] = [0,0,0,0]
-    
+    private lazy var emoticonLayout: LXHFlowLayout = {
+        let flowlayout = LXHFlowLayout.init(numOfItemsInRow: 7, numOfItemsInColumn: 3)
+        
+        return flowlayout
+    }()
     private lazy var packages: [LXHEmoticonPackage] = LXHEmoticonPackage.loadPackage()
     @objc func itemClick(item: UIBarButtonItem)
     {
@@ -147,6 +153,7 @@ class LXHEmoticonCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+/*
 class LXHemoticonLayout: UICollectionViewFlowLayout {
     override func prepare() {
         super.prepare()
@@ -163,10 +170,12 @@ class LXHemoticonLayout: UICollectionViewFlowLayout {
         //设置0.5在5s等小屏机型上可能会出问题
         
         let offY = (collectionView!.bounds.height - 3*width)*0.49
+        
         self.sectionInset = UIEdgeInsetsMake(offY, 0, offY, 0)
 //        collectionView?.contentInset = UIEdgeInsetsMake(offY, 0, offY, 0)
     }
 }
+ */
 extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewDelegate
 {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
