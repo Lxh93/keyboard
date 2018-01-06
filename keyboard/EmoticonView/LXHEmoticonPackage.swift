@@ -73,6 +73,7 @@ class LXHEmoticonPackage: NSObject {
         }
         return packages
     }
+    
     /**
      追加空白按钮
      如果一页不足21个,那么就添加一些空白按钮补齐
