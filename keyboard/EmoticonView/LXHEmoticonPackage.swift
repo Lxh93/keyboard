@@ -16,6 +16,8 @@ class LXHEmoticonPackage: NSObject {
     
     var emoticons: [LXHEmoticon]?
     
+    private lazy var contains: [LXHEmoticon] = [LXHEmoticon]()
+    
     init(id: String) {
         
         self.id = id
@@ -93,6 +95,59 @@ class LXHEmoticonPackage: NSObject {
         emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
         
     }
+    
+    /// 添加最近使用的表情
+    ///
+    /// - Parameter emoticon: 最近点击的表情模型
+    func appendEmoticons(emoticon:LXHEmoticon,reload:()->()){
+        
+        if emoticon.isRemoveButton {
+            return
+        }
+        let contain = emoticons!.contains(emoticon)
+        
+        if !contain{
+            
+            if contains.count == 40 {
+                contains.removeLast()
+                contains.insert(emoticon, at: 0)
+            }else if contains.count == 0{
+                contains.append(emoticon)
+            }else{
+                contains.insert(emoticon, at: 0)
+            }
+            
+            if contains.count == 40 {//最多保存两页最近使用的表情
+                emoticons?.removeLast()
+                emoticons?.removeLast()
+                emoticons?.insert(emoticon, at: 0)
+                (emoticons![20],emoticons![21]) = (emoticons![21],emoticons![20])
+                emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
+            }else if contains.count < 40 && contains.count > 20{
+                emoticons?.insert(emoticon, at: 0)
+                if contains.count == 21{
+                    appendEmtyEmoticons()
+                    (emoticons![20],emoticons![21]) = (emoticons![21],emoticons![20])
+                    //回调刷新表格
+                    reload()
+                }else{
+                    (emoticons![20],emoticons![21]) = (emoticons![21],emoticons![20])
+                    emoticons?.removeLast()
+                    emoticons?.removeLast()
+                    
+                    emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
+                }
+            }else{
+                emoticons?.removeLast()
+                emoticons?.removeLast()
+                emoticons?.insert(emoticon, at: 0)
+                emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
+            }
+        }else{
+            
+        }
+        print(contains.count)
+    }
 }
 class LXHEmoticon: NSObject {
     ///表情对应的文字
@@ -129,7 +184,6 @@ class LXHEmoticon: NSObject {
     var imagePath: String?
     
     var isRemoveButton: Bool = false
-    
     
     init(dict: [String: String],id: String) {
         super.init()

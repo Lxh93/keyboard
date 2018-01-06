@@ -198,8 +198,15 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let emoticon = packages[indexPath.section].emoticons![indexPath.item]
-        
+       
         emoticonBlock(emoticon)
+        if indexPath.section != 0{
+            packages[0].appendEmoticons(emoticon: emoticon, reload: {
+                
+                collectionView.reloadSections(IndexSet.init(integer: 0))
+                collectionView.contentOffset.x += collectionView.bounds.size.width
+            })
+        }
     }
     
     //利用该方法只在手动滑动界面时才会调用（点击按钮改变contentOffset不会触发该方法）去记录滑动到表情包的第几页
