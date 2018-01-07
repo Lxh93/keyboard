@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2FDEFCD32002210A0023BB23 /* String+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEFCD22002210A0023BB23 /* String+Category.swift */; };
 		DA3A1D8A2000697B00C16517 /* LXHFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3A1D892000697B00C16517 /* LXHFlowLayout.swift */; };
 		DA43A7082000A24900CC81C6 /* LXHEmoAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43A7072000A24900CC81C6 /* LXHEmoAttachment.swift */; };
 		DA43A70C2000AA7E00CC81C6 /* LXHEmoTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43A70B2000AA7E00CC81C6 /* LXHEmoTextView.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2FDEFCD22002210A0023BB23 /* String+Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Category.swift"; sourceTree = "<group>"; };
 		DA23CABB1FFDDCA400636084 /* keyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keyboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA3A1D892000697B00C16517 /* LXHFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LXHFlowLayout.swift; sourceTree = "<group>"; };
 		DA43A7072000A24900CC81C6 /* LXHEmoAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LXHEmoAttachment.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				DAD4E7301FFE210200AC3D76 /* LXHEmoticonPackage.swift */,
 				DA43A7072000A24900CC81C6 /* LXHEmoAttachment.swift */,
 				DA43A70B2000AA7E00CC81C6 /* LXHEmoTextView.swift */,
+				2FDEFCD22002210A0023BB23 /* String+Category.swift */,
 				DAD4E7241FFE19DF00AC3D76 /* Emoticons.bundle */,
 			);
 			path = EmoticonView;
@@ -164,6 +167,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FDEFCD32002210A0023BB23 /* String+Category.swift in Sources */,
 				DA3A1D8A2000697B00C16517 /* LXHFlowLayout.swift in Sources */,
 				DA43A7082000A24900CC81C6 /* LXHEmoAttachment.swift in Sources */,
 				DAD4E72F1FFE19DF00AC3D76 /* ViewController.swift in Sources */,

@@ -116,20 +116,21 @@ class LXHEmoticonCell: UICollectionViewCell {
     var emoticon: LXHEmoticon?
     {
         didSet{
-            // 1.判断是否是图片表情
+            //设置emoji表情
+            // 注意: 加上??可以防止重用
+            imgBtn.setTitle(emoticon!.emojiStr ?? "", for: .normal)
+            
+            // 判断是否是图片表情
             if emoticon!.chs != nil
             {
                 imgBtn.setImage(UIImage(contentsOfFile: emoticon!.imagePath!), for: .normal)
+                
             }else
             {
                 // 防止重用
                 imgBtn.setImage(nil, for: .normal)
             }
-            
-            // 2.设置emoji表情
-            // 注意: 加上??可以防止重用
-            imgBtn.setTitle(emoticon!.emojiStr ?? "", for: .normal)
-            // 3.判断是否是删除按钮
+            // 判断是否是删除按钮
             if emoticon!.isRemoveButton
             {
                 imgBtn.setImage(UIImage(named: "compose_emotion_delete"), for: .normal)
@@ -192,13 +193,18 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
         let emoticon = package.emoticons![indexPath.item]
         
         cell.emoticon = emoticon
-        
+//        imagePath    String?    "/Users/lixiaohua/Library/Developer/CoreSimulator/Devices/25CF0C57-5B44-42F9-B066-D52F96D1D12E/data/Containers/Bundle/Application/23A80BF9-25DE-4EFF-AF57-5F94053ABF0A/keyboard.app/Emoticons.bundle/com.sina.default/d_zuiyou.png"    some
+//        imagePath    String?    "/Users/lixiaohua/Library/Developer/CoreSimulator/Devices/25CF0C57-5B44-42F9-B066-D52F96D1D12E/data/Containers/Bundle/Application/634F0FA8-18AE-4978-BED7-56488C6DDF9E/keyboard.app/Emoticons.bundle/com.sina.default/d_zuiyou.png"    some
         return cell
     }
+   
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let emoticon = packages[indexPath.section].emoticons![indexPath.item]
-       
+        collectionView.reloadData()
+//       imagePath    String?    "/var/containers/Bundle/Application/C21310ED-6D53-4862-9C4F-5C99A7B213C4/keyboard.app/Emoticons.bundle/com.sina.lxh/lxh_xiaohaha.png"    some
+//        imagePath    String?    "/var/containers/Bundle/Application/E950C78D-87F3-4BEA-810C-3FFF6D649DA3/keyboard.app/Emoticons.bundle/com.sina.lxh/lxh_xiaohaha.png"    some
+//        imagePath    String?    "/var/containers/Bundle/Application/C21310ED-6D53-4862-9C4F-5C99A7B213C4/keyboard.app/Emoticons.bundle/com.sina.lxh/lxh_xiaohaha.png"    some
         emoticonBlock(emoticon)
         if indexPath.section != 0{
             packages[0].appendEmoticons(emoticon: emoticon, reload: {
@@ -208,7 +214,8 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
             })
         }
     }
-    
+//    1.完成最近表情的添加及显示（目前支持两页，实际开发中应该只需要一页 ，在最近表情有多页时需要刷新表格视图会有一个闪烁的bug 这个如果采用的是一个表格视图应该是没办法解决的 -- 可能需要使用不同的表格视图或者控制器去控制）
+//    2.明日目标 完成对最近表情的本地化处理及从本地加载图片表情
     //利用该方法只在手动滑动界面时才会调用（点击按钮改变contentOffset不会触发该方法）去记录滑动到表情包的第几页
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         

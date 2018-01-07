@@ -16,7 +16,7 @@ class LXHEmoticonPackage: NSObject {
     
     var emoticons: [LXHEmoticon]?
     
-    private lazy var contains: [LXHEmoticon] = [LXHEmoticon]()
+    var recentlyEmos: [LXHEmoticon]?
     
     init(id: String) {
         
@@ -49,6 +49,7 @@ class LXHEmoticonPackage: NSObject {
             index += 1
         }
     }
+    //加载所有表情包
     class func loadPackage() -> [LXHEmoticonPackage] {
         
         let path = Bundle.main.path(forResource: "emoticons.plist", ofType: nil, inDirectory: "Emoticons.bundle")
@@ -58,12 +59,7 @@ class LXHEmoticonPackage: NSObject {
         let dicArr = dic!["packages"] as! [[String: AnyObject]]
         
         var packages = [LXHEmoticonPackage]()
-        //最近使用的表情
-        let package = LXHEmoticonPackage.init(id: "")
-        package.group_name_cn = "最近"
-        package.emoticons = [LXHEmoticon]()
-        package.appendEmtyEmoticons()
-        packages.append(package)
+        
         
         for dict in dicArr {
             
@@ -73,6 +69,14 @@ class LXHEmoticonPackage: NSObject {
             packages.append(package)
             package.appendEmtyEmoticons()
         }
+        //最近使用的表情
+        let package = LXHEmoticonPackage.init(id: "")
+        package.group_name_cn = "最近"
+        package.recentlyEmos = package.loadRecentlyEmos() ?? [LXHEmoticon]()
+        package.emoticons = package.recentlyEmos ?? [LXHEmoticon]()
+        package.appendEmtyEmoticons()
+        packages.insert(package, at: 0)
+        
         return packages
     }
     
@@ -101,31 +105,30 @@ class LXHEmoticonPackage: NSObject {
     /// - Parameter emoticon: 最近点击的表情模型
     func appendEmoticons(emoticon:LXHEmoticon,reload:()->()){
         
-        if emoticon.isRemoveButton {
+        if emoticon.isRemoveButton || (emoticon.png == nil && emoticon.code == nil) {
             return
         }
         let contain = emoticons!.contains(emoticon)
         
         if !contain{
-            
-            if contains.count == 40 {
-                contains.removeLast()
-                contains.insert(emoticon, at: 0)
-            }else if contains.count == 0{
-                contains.append(emoticon)
+            if recentlyEmos?.count == 0{
+                recentlyEmos?.insert(emoticon, at: 0)
+            }else if recentlyEmos?.count == 40 {
+                recentlyEmos!.removeLast()
+                recentlyEmos!.insert(emoticon, at: 0)
             }else{
-                contains.insert(emoticon, at: 0)
+                recentlyEmos?.insert(emoticon, at: 0)
             }
             
-            if contains.count == 40 {//最多保存两页最近使用的表情
+            if recentlyEmos?.count == 40 {//最多保存两页最近使用的表情
                 emoticons?.removeLast()
                 emoticons?.removeLast()
                 emoticons?.insert(emoticon, at: 0)
                 (emoticons![20],emoticons![21]) = (emoticons![21],emoticons![20])
                 emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
-            }else if contains.count < 40 && contains.count > 20{
+            }else if recentlyEmos!.count < 40 && recentlyEmos!.count > 20{
                 emoticons?.insert(emoticon, at: 0)
-                if contains.count == 21{
+                if recentlyEmos!.count == 21{
                     appendEmtyEmoticons()
                     (emoticons![20],emoticons![21]) = (emoticons![21],emoticons![20])
                     //回调刷新表格
@@ -144,12 +147,42 @@ class LXHEmoticonPackage: NSObject {
                 emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
             }
         }else{
+            let index = emoticons?.index(of: emoticon)
             
+            emoticons?.remove(at: index!)
+            emoticons?.insert(emoticon, at: 0)
         }
-        print(contains.count)
+        saveRecentlyEmos(recentlyEmos: recentlyEmos!)
+        print(recentlyEmos!.count)
+    }
+    private func saveRecentlyEmos(recentlyEmos: [LXHEmoticon]){
+        NSKeyedArchiver.archiveRootObject(recentlyEmos, toFile: "recentlyEmos.plist".docDir())
+    }
+    func loadRecentlyEmos() -> [LXHEmoticon]?{
+        return NSKeyedUnarchiver.unarchiveObject(withFile: "recentlyEmos.plist".docDir()) as? [LXHEmoticon]
     }
 }
-class LXHEmoticon: NSObject {
+class LXHEmoticon: NSObject,NSCoding {
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(chs, forKey: "chs")
+        aCoder.encode(png, forKey: "png")
+        aCoder.encode(code, forKey: "code")
+        aCoder.encode(emojiStr, forKey: "emojiStr")
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(imagePath, forKey: "imagePath")
+        aCoder.encode(isRemoveButton, forKey: "isRemoveButton")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        chs = aDecoder.decodeObject(forKey: "chs") as? String
+        png = aDecoder.decodeObject(forKey: "png") as? String
+        code = aDecoder.decodeObject(forKey: "code") as? String
+        emojiStr = aDecoder.decodeObject(forKey: "emojiStr") as? String
+        id = aDecoder.decodeObject(forKey: "id") as? String
+        imagePath = aDecoder.decodeObject(forKey: "imagePath") as? String
+        isRemoveButton = (aDecoder.decodeObject(forKey: "isRemoveButton") != nil)
+    }
+    
     ///表情对应的文字
     var chs: String?
     ///表情对应的图片
@@ -205,6 +238,7 @@ class LXHEmoticon: NSObject {
             imagePath = (LXHEmoticonPackage.emoticonPath().appendingPathComponent(id) as NSString).appendingPathComponent(png!)
         }
     }
+    
     init(isRemoveButton: Bool) {
         super.init()
         self.isRemoveButton = isRemoveButton

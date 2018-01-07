@@ -10,6 +10,7 @@ import UIKit
 
 class LXHEmoTextView: UITextView {
     
+    typealias finished = (_ text:String)->()
     /// 插入表情
     ///
     /// - Parameter emoticon: 需要的表情模型
@@ -48,9 +49,8 @@ class LXHEmoTextView: UITextView {
     /**
      获取需要发送给服务器的字符串
      */
-    func emoticonAttributedText(finished:@escaping (_ text:String)->())
+    func emoticonAttributedText(finished:finished)
     {
-        
         self.attributedText.enumerateAttributes(in: NSRange.init(location: 0, length: self.attributedText.length), options: NSAttributedString.EnumerationOptions.init(rawValue: 0)) { (objc, range, _) in
             
             var strM = String()
@@ -63,7 +63,6 @@ class LXHEmoTextView: UITextView {
                 strM += (self.text as NSString).substring(with: range)
             }
             finished(strM)
-            
         }
         
     }
