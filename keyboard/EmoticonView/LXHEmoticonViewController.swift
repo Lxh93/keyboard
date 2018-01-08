@@ -206,16 +206,17 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
 //        imagePath    String?    "/var/containers/Bundle/Application/E950C78D-87F3-4BEA-810C-3FFF6D649DA3/keyboard.app/Emoticons.bundle/com.sina.lxh/lxh_xiaohaha.png"    some
 //        imagePath    String?    "/var/containers/Bundle/Application/C21310ED-6D53-4862-9C4F-5C99A7B213C4/keyboard.app/Emoticons.bundle/com.sina.lxh/lxh_xiaohaha.png"    some
         emoticonBlock(emoticon)
-        if indexPath.section != 0{
-            packages[0].appendEmoticons(emoticon: emoticon, reload: {
-                
-                collectionView.reloadSections(IndexSet.init(integer: 0))
-                collectionView.contentOffset.x += collectionView.bounds.size.width
-            })
-        }
+        
+        packages[0].appendEmoticons(emoticon: emoticon, reload: {
+            
+            collectionView.reloadSections(IndexSet.init(integer: 0))
+            collectionView.contentOffset.x += collectionView.bounds.size.width
+        })
+        
     }
 //    1.完成最近表情的添加及显示（目前支持两页，实际开发中应该只需要一页 ，在最近表情有多页时需要刷新表格视图会有一个闪烁的bug 这个如果采用的是一个表格视图应该是没办法解决的 -- 可能需要使用不同的表格视图或者控制器去控制）
 //    2.明日目标 完成对最近表情的本地化处理及从本地加载图片表情
+    
     //利用该方法只在手动滑动界面时才会调用（点击按钮改变contentOffset不会触发该方法）去记录滑动到表情包的第几页
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
@@ -231,7 +232,9 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
         
         if index < emoticons1 {
             //记录滑动到最近表情的第几页表情
-            itemCounts[0] = index
+//            itemCounts[0] = index
+            //一般来说 点击最近表情应该是想要最近使用的表情 所以默认为第一页
+            itemCounts[0] = 0
             
         }else if emoticons1 <= index && index < emoticons2+emoticons1{
             //记录滑动到默认表情的第几页表情
