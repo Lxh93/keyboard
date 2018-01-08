@@ -67,7 +67,8 @@ class LXHEmoticonPackage: NSObject {
             
             package.recentlyEmos = package.loadRecentlyEmos()!
             package.replaceBundlePath(recentlyEmos: package.recentlyEmos!)
-            package.emoticons = package.recentlyEmos!
+            package.saveRecentlyEmos(recentlyEmos: package.recentlyEmos!)
+            package.emoticons = package.loadRecentlyEmos()!
         }else{
             package.recentlyEmos = [LXHEmoticon]()
             package.emoticons = [LXHEmoticon]()
@@ -112,6 +113,11 @@ class LXHEmoticonPackage: NSObject {
         if count == 0 && emoticons?.count != 0 && recentlyEmos == nil{//除第一页以外 整除的不需要加空白按钮了
             return
         }
+        if recentlyEmos != nil {
+            if recentlyEmos!.count%20 == 0 && recentlyEmos!.count != 0 {
+                return
+            }
+        }
         // 追加空白按钮
         for _ in count..<20
         {
@@ -145,16 +151,25 @@ class LXHEmoticonPackage: NSObject {
         
         var contain = false
         var index = 0
-        
+        var recentlyIndex = 0
         if emoticons?.count == 0 || recentlyEmos?.count == 0{
             contain = false
         }else{
-            for emo in emoticons! {
-                if emo.imagePath == emoticon.imagePath && emo.code == emoticon.code{
+            for emo in emoticons!.enumerated() {
+                if emo.element.imagePath == emoticon.imagePath && emo.element.code == emoticon.code{
                     contain = true
-                    //模型重新赋值
-                    index = emoticons!.index(of: emo)!
+                    
+                    index = emo.offset
+                   
 //                    emoticon = emo
+                }
+            }
+            for emo in recentlyEmos!.enumerated() {
+                if emo.element.imagePath == emoticon.imagePath && emo.element.code == emoticon.code{
+                    contain = true
+                    
+                    recentlyIndex = emo.offset
+                   
                 }
             }
         }
@@ -168,6 +183,7 @@ class LXHEmoticonPackage: NSObject {
             }else{
                 recentlyEmos?.insert(emoticon, at: 0)
             }
+            print("......",recentlyEmos!.count)
             //计算需要显示的表情模型
             if recentlyEmos?.count == 40 {//最多保存两页最近使用的表情
                 emoticons?.removeLast()
@@ -197,10 +213,20 @@ class LXHEmoticonPackage: NSObject {
                 emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
             }
         }else{
-            emoticons!.remove(at: index)
-            emoticons!.insert(emoticon, at: 0)
-            recentlyEmos!.remove(at: index)
-            recentlyEmos?.insert(emoticon, at: 0)
+            if index>20{
+                recentlyEmos!.remove(at: recentlyIndex)
+                recentlyEmos?.insert(emoticon, at: 0)
+                emoticons!.remove(at: index)
+                emoticons!.insert(emoticon, at: 0)
+                (emoticons![20],emoticons![21]) = (emoticons![21],emoticons![20])
+
+            }else{
+                
+                emoticons!.remove(at: index)
+                emoticons!.insert(emoticon, at: 0)
+                recentlyEmos!.remove(at: recentlyIndex)
+                recentlyEmos?.insert(emoticon, at: 0)
+            }
         }
         saveRecentlyEmos(recentlyEmos: recentlyEmos!)
         
