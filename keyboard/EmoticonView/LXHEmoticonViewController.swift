@@ -21,23 +21,42 @@ class LXHEmoticonViewController: UIViewController {
     
     var emoticonBlock: (_ emoticon:LXHEmoticon)->()
     
+    var times = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if times == 0 {
+            if packages[0].recentlyEmos?.count == 0{
+                if collectionView.contentOffset.x == 0{
+                    
+                    collectionView.contentOffset.x += collectionView.bounds.size.width
+                }
+            }
+            times = 1
+        }
+    }
+    
+    
+    
     init(emoticon:  @escaping (_ emoticon:LXHEmoticon)->()) {
         
         emoticonBlock = emoticon
         
         super.init(nibName: nil, bundle: nil)
+        
     }
     
     
     private func setupUI()
     {
-        view.backgroundColor = UIColor.red
+        view.backgroundColor = UIColor.darkGray
         
         view.addSubview(collectionView)
         
@@ -65,7 +84,7 @@ class LXHEmoticonViewController: UIViewController {
         clv.register(LXHEmoticonCell.self, forCellWithReuseIdentifier: lxhEmoticonCell)
         clv.dataSource = self
         clv.delegate = self
-//        clv.backgroundColor = UIColor.red
+        clv.backgroundColor = UIColor.init(red: 160, green: 160, blue: 160, alpha: 0.3)
         return clv
     }()
     private lazy var toolBar:UIToolbar = {
@@ -75,16 +94,18 @@ class LXHEmoticonViewController: UIViewController {
         var index = 0
         var items = [UIBarButtonItem]()
         
-        for title in packages
+        for package in packages
         {
-            let item = UIBarButtonItem.init(title: title.group_name_cn, style: UIBarButtonItemStyle.plain, target: self, action: #selector(itemClick(item:)))
+            let item = UIBarButtonItem.init(title: package.group_name_cn, style: UIBarButtonItemStyle.plain, target: self, action: #selector(itemClick(item:)))
             item.tag = 10 + index
             index += 1
             items.append(item)
             items.append(UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil))
+            
         }
         items.removeLast()
         bar.items = items
+        
         return bar
     }()
     var itemCounts: [NSInteger] = [0,0,0,0]
@@ -99,9 +120,9 @@ class LXHEmoticonViewController: UIViewController {
         let index = item.tag - 10
         
         let indexPath = IndexPath.init(item: itemCounts[index] * 21, section: index)
-        
+       
         collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
-        
+      
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -146,7 +167,7 @@ class LXHEmoticonCell: UICollectionViewCell {
         let btn = UIButton.init(type: UIButtonType.custom)
         btn.frame = contentView.bounds.insetBy(dx: 4, dy: 4)
         btn.isUserInteractionEnabled = false
-        btn.backgroundColor = UIColor.white
+        btn.backgroundColor = UIColor.clear
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 32)
         return btn
     }()
@@ -188,13 +209,14 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: lxhEmoticonCell, for: indexPath) as! LXHEmoticonCell
-        cell.backgroundColor = (indexPath.item % 2 == 0) ? UIColor.red : UIColor.green
+//        cell.backgroundColor = (indexPath.item % 2 == 0) ? UIColor.red : UIColor.green
         let package = packages[indexPath.section]
         let emoticon = package.emoticons![indexPath.item]
         
         cell.emoticon = emoticon
 //        imagePath    String?    "/Users/lixiaohua/Library/Developer/CoreSimulator/Devices/25CF0C57-5B44-42F9-B066-D52F96D1D12E/data/Containers/Bundle/Application/23A80BF9-25DE-4EFF-AF57-5F94053ABF0A/keyboard.app/Emoticons.bundle/com.sina.default/d_zuiyou.png"    some
 //        imagePath    String?    "/Users/lixiaohua/Library/Developer/CoreSimulator/Devices/25CF0C57-5B44-42F9-B066-D52F96D1D12E/data/Containers/Bundle/Application/634F0FA8-18AE-4978-BED7-56488C6DDF9E/keyboard.app/Emoticons.bundle/com.sina.default/d_zuiyou.png"    some
+        
         return cell
     }
    

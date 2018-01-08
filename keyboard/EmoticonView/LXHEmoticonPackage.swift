@@ -42,7 +42,7 @@ class LXHEmoticonPackage: NSObject {
         for dic in dicArr {
             if index == 20
             {
-                emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
+//                emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
                 index = 0
             }
             emoticons?.append(LXHEmoticon.init(dict: dic, id: id!))
@@ -60,15 +60,6 @@ class LXHEmoticonPackage: NSObject {
         
         var packages = [LXHEmoticonPackage]()
         
-        
-        for dict in dicArr {
-            
-            let package = LXHEmoticonPackage.init(id: dict["id"] as! String)
-            
-            package.loadEmoticons()
-            packages.append(package)
-            package.appendEmtyEmoticons()
-        }
         //最近使用的表情
         let package = LXHEmoticonPackage.init(id: "")
         package.group_name_cn = "最近"
@@ -84,6 +75,16 @@ class LXHEmoticonPackage: NSObject {
         package.appendEmtyEmoticons()
         packages.insert(package, at: 0)
         
+        for dict in dicArr {
+            
+            let package = LXHEmoticonPackage.init(id: dict["id"] as! String)
+            
+            package.loadEmoticons()
+            packages.append(package)
+            package.appendEmtyEmoticons()
+        }
+        
+        
         return packages
     }
     
@@ -93,18 +94,44 @@ class LXHEmoticonPackage: NSObject {
      */
     func appendEmtyEmoticons()
     {
+        let page = emoticons!.count/20
+        print(page)
+        var deletes = 0
         
-        let count = emoticons!.count % 21
         
+        if page > 0 {//超过一页
+            for index in 1 ... page{
+                
+                emoticons?.insert(LXHEmoticon.init(isRemoveButton: true), at: index*21-1)
+                //                emoticons?.removeLast()
+                deletes += 1
+            }
+        }
+        //        39
+        let count = (emoticons!.count - 21*page)%21
+        if count == 0 && emoticons?.count != 0 && recentlyEmos == nil{//除第一页以外 整除的不需要加空白按钮了
+            return
+        }
         // 追加空白按钮
         for _ in count..<20
         {
             // 追加空白按钮
             emoticons?.append(LXHEmoticon.init(isRemoveButton: false))
         }
+        if deletes > 0 {
+            // 删除多追加的空白按钮
+            for _ in 0..<deletes
+            {
+                // 空白按钮
+//                emoticons?.removeLast()
+                if page == 5{
+                    print("删删删删删删")
+                }
+            }
+        }
         // 追加一个删除按钮
         emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
-        
+    
     }
     
     /// 添加最近使用的表情
@@ -119,7 +146,7 @@ class LXHEmoticonPackage: NSObject {
         var contain = false
         var index = 0
         
-        if emoticons?.count == 0 || emoticons == nil {
+        if emoticons?.count == 0 || recentlyEmos?.count == 0{
             contain = false
         }else{
             for emo in emoticons! {
@@ -151,8 +178,9 @@ class LXHEmoticonPackage: NSObject {
             }else if recentlyEmos!.count < 40 && recentlyEmos!.count > 20{
                 emoticons?.insert(emoticon, at: 0)
                 if recentlyEmos!.count == 21{
+                    emoticons?.removeLast()//此时最后一个是删除按钮
                     appendEmtyEmoticons()
-                    (emoticons![20],emoticons![21]) = (emoticons![21],emoticons![20])
+//                    (emoticons![20],emoticons![21]) = (emoticons![21],emoticons![20])
                     //回调刷新表格
                     reload()
                 }else{
@@ -171,6 +199,8 @@ class LXHEmoticonPackage: NSObject {
         }else{
             emoticons!.remove(at: index)
             emoticons!.insert(emoticon, at: 0)
+            recentlyEmos!.remove(at: index)
+            recentlyEmos?.insert(emoticon, at: 0)
         }
         saveRecentlyEmos(recentlyEmos: recentlyEmos!)
         
