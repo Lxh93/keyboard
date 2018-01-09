@@ -78,7 +78,7 @@ class LXHEmoticonViewController: UIViewController {
         
         cons += NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[pageController]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
 //        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:[collectionView(\(3*width+3))]-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
-        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[collectionView]-0-[pageController(10)]-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
+        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[collectionView]-0-[pageController(10)]-5-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
         
         view.addConstraints(cons)
     }
@@ -88,6 +88,8 @@ class LXHEmoticonViewController: UIViewController {
         clv.dataSource = self
         clv.delegate = self
         clv.backgroundColor = UIColor.init(red: 160, green: 160, blue: 160, alpha: 0.3)
+        clv.showsVerticalScrollIndicator = false
+        clv.showsHorizontalScrollIndicator = false
         return clv
     }()
     private lazy var toolBar:UIToolbar = {
@@ -111,18 +113,8 @@ class LXHEmoticonViewController: UIViewController {
         
         return bar
     }()
-    lazy var pageController: UIPageControl = {
-        let page = UIPageControl()
-        page.numberOfPages = packages[0].emoticons!.count/21
-        page.pageIndicatorTintColor = UIColor.lightGray
-        page.currentPageIndicatorTintColor = UIColor.gray
-        
-        return page
-    }()
-    func changePageControllerNums(pages: Int,current:Int){
-        pageController.numberOfPages = pages
-        pageController.currentPage = current
-    }
+    lazy var pageController: LXHPageController = LXHPageController.init(packages: packages)
+    
     var itemCounts: [NSInteger] = [0,0,0,0]
     var numOfPages:[NSInteger] = [0,0,0,0]
     
@@ -143,7 +135,7 @@ class LXHEmoticonViewController: UIViewController {
         }else{
             indexPath = IndexPath.init(item: itemCounts[index] * 21, section: index)
         }
-        changePageControllerNums(pages:numOfPages[index] , current: itemCounts[index])
+        pageController.changePageControllerNums(pages:numOfPages[index] , current: itemCounts[index])
         collectionView.scrollToItem(at: indexPath!, at: UICollectionViewScrollPosition.left, animated: true)
       
     }
@@ -152,7 +144,45 @@ class LXHEmoticonViewController: UIViewController {
     }
     
 }
-
+class LXHPageController: UIPageControl {
+    
+    init(packages:[LXHEmoticonPackage]) {
+        super.init(frame: CGRect.zero)
+        initThring(packages: packages)
+        addTarget(self, action: #selector(test), for: .valueChanged)
+        addBotBtn()
+    }
+    func initThring(packages:[LXHEmoticonPackage]){
+        numberOfPages = packages[0].emoticons!.count/21
+        pageIndicatorTintColor = UIColor.lightGray
+        currentPageIndicatorTintColor = UIColor.gray
+        hidesForSinglePage = true
+    }
+    @objc func test(){
+        
+    }
+    func addBotBtn() {
+        for i in 0..<subviews.count {
+            subviews[i].isUserInteractionEnabled = true
+            let btn = UIButton.init(type: UIButtonType.custom)
+            btn.frame = subviews[i].bounds
+            btn.tag = 10+i
+            btn.addTarget(self, action: #selector(botBtnClick(botBtn:)), for: .touchUpInside)
+            subviews[i].addSubview(btn)
+            print(subviews[i])
+        }
+    }
+    @objc func botBtnClick(botBtn:UIButton){
+        print(".....",botBtn.tag)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    func changePageControllerNums(pages: Int,current:Int){
+        numberOfPages = pages
+        currentPage = current
+    }
+}
 class LXHEmoticonCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -296,6 +326,6 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
             current = itemCounts[3]
             pages = emoticons4
         }
-        changePageControllerNums(pages: pages, current: current)
+        pageController.changePageControllerNums(pages: pages, current: current)
     }
 }

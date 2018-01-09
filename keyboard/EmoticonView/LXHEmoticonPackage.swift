@@ -96,7 +96,7 @@ class LXHEmoticonPackage: NSObject {
     func appendEmtyEmoticons()
     {
         let page = emoticons!.count/20
-        print(page)
+        
         var deletes = 0
         
         
@@ -124,17 +124,7 @@ class LXHEmoticonPackage: NSObject {
             // 追加空白按钮
             emoticons?.append(LXHEmoticon.init(isRemoveButton: false))
         }
-        if deletes > 0 {
-            // 删除多追加的空白按钮
-            for _ in 0..<deletes
-            {
-                // 空白按钮
-//                emoticons?.removeLast()
-                if page == 5{
-                    print("删删删删删删")
-                }
-            }
-        }
+        
         // 追加一个删除按钮
         emoticons?.append(LXHEmoticon.init(isRemoveButton: true))
     
@@ -183,7 +173,7 @@ class LXHEmoticonPackage: NSObject {
             }else{
                 recentlyEmos?.insert(emoticon, at: 0)
             }
-            print("......",recentlyEmos!.count)
+            
             //计算需要显示的表情模型
             if recentlyEmos?.count == 40 {//最多保存两页最近使用的表情
                 emoticons?.removeLast()
@@ -230,7 +220,6 @@ class LXHEmoticonPackage: NSObject {
         }
         saveRecentlyEmos(recentlyEmos: recentlyEmos!)
         
-        print(recentlyEmos!.count)
     }
     private func saveRecentlyEmos(recentlyEmos: [LXHEmoticon]){
         NSKeyedArchiver.archiveRootObject(recentlyEmos, toFile: "recentlyEmos.plist".docDir())
