@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2FDEFCD32002210A0023BB23 /* String+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDEFCD22002210A0023BB23 /* String+Category.swift */; };
+		DA170B1C20059CE70069E33E /* LXHPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA170B1B20059CE70069E33E /* LXHPageControl.swift */; };
+		DA3A1D8A2000697B00C16517 /* LXHFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3A1D892000697B00C16517 /* LXHFlowLayout.swift */; };
+		DA43A7082000A24900CC81C6 /* LXHEmoAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43A7072000A24900CC81C6 /* LXHEmoAttachment.swift */; };
+		DA43A70C2000AA7E00CC81C6 /* LXHEmoTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43A70B2000AA7E00CC81C6 /* LXHEmoTextView.swift */; };
+		DA8C5B9820033611008CEABF /* DispatchQueue+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8C5B9720033611008CEABF /* DispatchQueue+Category.swift */; };
+		DA8C5B9A20033ADE008CEABF /* LXHViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8C5B9920033ADE008CEABF /* LXHViewController.swift */; };
 		DAD4E7281FFE19DF00AC3D76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD4E71D1FFE19DF00AC3D76 /* AppDelegate.swift */; };
 		DAD4E7291FFE19DF00AC3D76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAD4E71E1FFE19DF00AC3D76 /* Assets.xcassets */; };
 		DAD4E72A1FFE19DF00AC3D76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAD4E71F1FFE19DF00AC3D76 /* LaunchScreen.storyboard */; };
@@ -18,7 +25,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2FDEFCD22002210A0023BB23 /* String+Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Category.swift"; sourceTree = "<group>"; };
+		DA170B1B20059CE70069E33E /* LXHPageControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LXHPageControl.swift; sourceTree = "<group>"; };
 		DA23CABB1FFDDCA400636084 /* keyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keyboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA3A1D892000697B00C16517 /* LXHFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LXHFlowLayout.swift; sourceTree = "<group>"; };
+		DA43A7072000A24900CC81C6 /* LXHEmoAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LXHEmoAttachment.swift; sourceTree = "<group>"; };
+		DA43A70B2000AA7E00CC81C6 /* LXHEmoTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LXHEmoTextView.swift; sourceTree = "<group>"; };
+		DA8C5B9720033611008CEABF /* DispatchQueue+Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Category.swift"; sourceTree = "<group>"; };
+		DA8C5B9920033ADE008CEABF /* LXHViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LXHViewController.swift; sourceTree = "<group>"; };
 		DAD4E71D1FFE19DF00AC3D76 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DAD4E71E1FFE19DF00AC3D76 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DAD4E7201FFE19DF00AC3D76 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -63,6 +77,7 @@
 				DAD4E7231FFE19DF00AC3D76 /* EmoticonView */,
 				DAD4E71D1FFE19DF00AC3D76 /* AppDelegate.swift */,
 				DAD4E7271FFE19DF00AC3D76 /* ViewController.swift */,
+				DA8C5B9920033ADE008CEABF /* LXHViewController.swift */,
 				DAD4E71E1FFE19DF00AC3D76 /* Assets.xcassets */,
 				DAD4E71F1FFE19DF00AC3D76 /* LaunchScreen.storyboard */,
 				DAD4E7211FFE19DF00AC3D76 /* Main.storyboard */,
@@ -75,7 +90,13 @@
 			isa = PBXGroup;
 			children = (
 				DAD4E7251FFE19DF00AC3D76 /* LXHEmoticonViewController.swift */,
+				DA3A1D892000697B00C16517 /* LXHFlowLayout.swift */,
 				DAD4E7301FFE210200AC3D76 /* LXHEmoticonPackage.swift */,
+				DA43A7072000A24900CC81C6 /* LXHEmoAttachment.swift */,
+				DA43A70B2000AA7E00CC81C6 /* LXHEmoTextView.swift */,
+				2FDEFCD22002210A0023BB23 /* String+Category.swift */,
+				DA8C5B9720033611008CEABF /* DispatchQueue+Category.swift */,
+				DA170B1B20059CE70069E33E /* LXHPageControl.swift */,
 				DAD4E7241FFE19DF00AC3D76 /* Emoticons.bundle */,
 			);
 			path = EmoticonView;
@@ -155,10 +176,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FDEFCD32002210A0023BB23 /* String+Category.swift in Sources */,
+				DA3A1D8A2000697B00C16517 /* LXHFlowLayout.swift in Sources */,
+				DA170B1C20059CE70069E33E /* LXHPageControl.swift in Sources */,
+				DA43A7082000A24900CC81C6 /* LXHEmoAttachment.swift in Sources */,
 				DAD4E72F1FFE19DF00AC3D76 /* ViewController.swift in Sources */,
+				DA43A70C2000AA7E00CC81C6 /* LXHEmoTextView.swift in Sources */,
 				DAD4E7311FFE210200AC3D76 /* LXHEmoticonPackage.swift in Sources */,
+				DA8C5B9820033611008CEABF /* DispatchQueue+Category.swift in Sources */,
 				DAD4E7281FFE19DF00AC3D76 /* AppDelegate.swift in Sources */,
 				DAD4E72D1FFE19DF00AC3D76 /* LXHEmoticonViewController.swift in Sources */,
+				DA8C5B9A20033ADE008CEABF /* LXHViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
