@@ -26,7 +26,7 @@ class LXHEmoTextView: UITextView {
             let font = self.font!
             
             attachment.image = UIImage.init(contentsOfFile: emoticon.imagePath!)
-            attachment.bounds = CGRect.init(x: 0, y: -3.8, width: 20.2, height: 20.2)
+            attachment.bounds = CGRect.init(x: 0, y: -3.8, width: self.font!.lineHeight, height: self.font!.lineHeight)
             attachment.chs = emoticon.chs
             let imageText = NSAttributedString.init(attachment: attachment)
             

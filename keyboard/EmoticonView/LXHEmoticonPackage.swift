@@ -49,8 +49,9 @@ class LXHEmoticonPackage: NSObject {
             index += 1
         }
     }
+    static let packages:[LXHEmoticonPackage] = loadPackage()
     //加载所有表情包
-    class func loadPackage() -> [LXHEmoticonPackage] {
+    private class func loadPackage() -> [LXHEmoticonPackage] {
         
         let path = Bundle.main.path(forResource: "emoticons.plist", ofType: nil, inDirectory: "Emoticons.bundle")
         

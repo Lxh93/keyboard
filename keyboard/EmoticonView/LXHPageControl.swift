@@ -4,41 +4,60 @@ import UIKit
 
 class LXHPageControl: UIControl {
 
-
-    private var localNumberOfPages = NSInteger()//分页数量
-    private var localCurrentPage = NSInteger()//当前点所在下标
-    private var localPointSize = CGSize()//点的大小
-    private var localPointSpace = CGFloat()//点之间的间距
-    private var localOtherColor = UIColor()//未选中点的颜色
-    private var localCurrentColor = UIColor()//当前点的颜色
-    private var localOtherImage: UIImage?//未选中点的图片
-    private var localCurrentImage: UIImage?//当前点的图片
-    private var localIsSquare = Bool()//是否是方形点
-    private var localCurrentWidthMultiple = CGFloat()//当前选中点宽度与未选中点的宽度的倍数
-    private var localOtherBorderColor: UIColor?//未选中点的layerColor
-    private var localOtherBorderWidth: CGFloat?//未选中点的layer宽度
-    private var localCurrentBorderColor: UIColor?//未选中点的layerColor
-    private var localCurrentBorderWidth: CGFloat?//未选中点的layer宽度
+    
+    /// 分页数量
+    private var localNumberOfPages = NSInteger()
+    ///当前点所在下标
+    private var localCurrentPage = NSInteger()
+    ///点的大小
+    private var localPointSize = CGSize()
+    ///点之间的间距
+    private var localPointSpace = CGFloat()
+    ///未选中点的颜色
+    private var localOtherColor = UIColor()
+    ///当前点的颜色
+    private var localCurrentColor = UIColor()
+    ///未选中点的图片
+    private var localOtherImage: UIImage?
+    ///当前点的图片
+    private var localCurrentImage: UIImage?
+    ///是否是方形点
+    private var localIsSquare = Bool()
+    ///当前选中点宽度与未选中点的宽度的倍数
+    private var localCurrentWidthMultiple = CGFloat()
+    ///未选中点的layerColor
+    private var localOtherBorderColor: UIColor?
+    ///未选中点的layer宽度
+    private var localOtherBorderWidth: CGFloat?
+    ///未选中点的layerColor
+    private var localCurrentBorderColor: UIColor?
+    ///未选中点的layer宽度
+    private var localCurrentBorderWidth: CGFloat?
     var clickIndex: ((_ result: NSInteger?) -> ())?
 
-    override init(frame: CGRect) {
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        initialize()
+//    }
+    init(frame: CGRect,pages:[LXHEmoticonPackage]) {
         super.init(frame: frame)
-        initialize()
+        initialize(packages:pages)
     }
-
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func initialize() {
+    func initialize(packages:[LXHEmoticonPackage]) {
+        self.sizeToFit()
         self.backgroundColor = UIColor.clear
-        localNumberOfPages = 0//必须传入总页数
+        localNumberOfPages = packages[0].emoticons!.count/21//必须传入总页数
+//        numberOfPages = packages[0].emoticons!.count/21
         localCurrentPage = 0//默认当前页数为第一页
-        localPointSize = CGSize.init(width: 6, height: 6)//默认点的宽高分别为6
-        localPointSpace = 8//默认点的间距为8
+        localPointSize = CGSize.init(width: 8, height: 8)//默认点的宽高分别为8
+        localPointSpace = 10//默认点的间距为8
         localIsSquare = false//默认是圆点
-        localOtherColor = UIColor.init(white: 1, alpha: 0.5)//默认未选中点的颜色为白色，透明度50%
-        localCurrentColor = UIColor.white//默认选中点的颜色为白色
+        localOtherColor = UIColor.lightGray//默认未选中点的颜色为白色，透明度50%
+        localCurrentColor = UIColor.darkGray//默认选中点的颜色为白色
         localCurrentWidthMultiple = 1//当前选中点宽度与未选中点的宽度的倍数，默认为1倍
         creatPointView()//创建view
     }
@@ -220,7 +239,7 @@ class LXHPageControl: UIControl {
         let mainWidth = CGFloat(localNumberOfPages) * (localPointSize.width + localPointSpace)
 
         if self.frame.size.width > mainWidth {
-            startX = (self.frame.size.width - mainWidth) / 2
+            startX = (self.bounds.size.width - mainWidth) / 2
         }
 
         if self.frame.size.height > localPointSize.height {
@@ -230,32 +249,30 @@ class LXHPageControl: UIControl {
         //创建点
         for index in 0 ..< numberOfPages {
             
-            let currentPointView = UIView.init()
-            let currentPointViewWidth = (index == localCurrentPage) ? (localPointSize.width * localCurrentWidthMultiple) : localPointSize.width
-            currentPointView.frame = CGRect.init(x: startX, y: startY, width: currentPointViewWidth, height: localPointSize.height)
-            currentPointView.backgroundColor = (index == localCurrentPage) ? localCurrentColor : localOtherColor
-            currentPointView.tag = index + 1000
-            currentPointView.layer.cornerRadius = localIsSquare ? 0 : localPointSize.height / 2
-            currentPointView.layer.masksToBounds = true
+            let currentPointBtn = UIButton.init(type: .custom)
+            let currentPointBtnWidth = (index == localCurrentPage) ? (localPointSize.width * localCurrentWidthMultiple) : localPointSize.width
+            currentPointBtn.frame = CGRect.init(x: startX, y: startY, width: currentPointBtnWidth, height: localPointSize.height)
+            currentPointBtn.backgroundColor = (index == localCurrentPage) ? localCurrentColor : localOtherColor
+            currentPointBtn.tag = index + 1000
+            currentPointBtn.layer.cornerRadius = localIsSquare ? 0 : localPointSize.height / 2
+            currentPointBtn.layer.masksToBounds = true
             let borderColor = (index == localCurrentPage) ? (localCurrentBorderColor != nil ? localCurrentBorderColor?.cgColor : localCurrentColor.cgColor) : (localOtherBorderColor != nil ? localOtherBorderColor?.cgColor : localOtherColor.cgColor)
             let boardWidth = (index == localCurrentPage) ? (localCurrentBorderWidth != nil ? localCurrentBorderWidth! : 0) : (localOtherBorderWidth != nil ? localOtherBorderWidth! : 0)
             
-            currentPointView.layer.borderColor = borderColor
-            currentPointView.layer.borderWidth = boardWidth
+            currentPointBtn.layer.borderColor = borderColor
+            currentPointBtn.layer.borderWidth = boardWidth
             
-            currentPointView.isUserInteractionEnabled = true
-            self.addSubview(currentPointView)
-            let tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(clickAction(tapGesture:)))//添加小圆点点击手势
-            currentPointView.addGestureRecognizer(tapGesture)
-            startX = currentPointView.frame.maxX + localPointSpace
+            self.addSubview(currentPointBtn)
+            currentPointBtn.addTarget(self, action: #selector(clickAction(tapGesture:)), for: .touchUpInside)
+            startX = currentPointBtn.frame.maxX + localPointSpace
             
             if localCurrentImage != nil || localOtherImage != nil{
-                currentPointView.backgroundColor = UIColor.clear
+                currentPointBtn.backgroundColor = UIColor.clear
                 let localCurrentImageView = UIImageView.init()
                 localCurrentImageView.tag = index + 2000
-                localCurrentImageView.frame = currentPointView.bounds
+                localCurrentImageView.frame = currentPointBtn.bounds
                 localCurrentImageView.image = (index == localCurrentPage) ? localCurrentImage :localOtherImage
-                currentPointView.addSubview(localCurrentImageView)
+                currentPointBtn.addSubview(localCurrentImageView)
             }
             /*
             if index == localCurrentPage {//是当前点
@@ -309,7 +326,10 @@ class LXHPageControl: UIControl {
             */
         }
     }
-
+    func changePageControllerNums(pages: Int,current:Int){
+        numberOfPages = pages
+        currentPage = current
+    }
     func exchangeCurrentView(oldSelectedIndex: NSInteger, newSelectedIndex: NSInteger) {//切换当前点和其他点
         
        
@@ -400,8 +420,10 @@ class LXHPageControl: UIControl {
         */
     }
     
-    @objc func clickAction(tapGesture: UITapGestureRecognizer) {//点击小圆点
-        let index = (tapGesture.view?.tag)! - 1000
+    @objc func clickAction(tapGesture: UIButton) {//点击小圆点
+        let index = tapGesture.tag - 1000
+        
+        currentPage = index
         self.clickIndex?(index)
     }
     func getMin(first:Int,sencond:Int)-> Int{

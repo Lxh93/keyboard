@@ -25,21 +25,20 @@ class LXHEmoticonViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if times == 0 {
+//        if times == 0 {
             if packages[0].recentlyEmos?.count == 0{
                 if collectionView.contentOffset.x == 0{
                     
                     collectionView.contentOffset.x += collectionView.bounds.size.width
                 }
-            }
-            times = 1
+//            }
+//            times = 1
         }
     }
     
@@ -56,7 +55,7 @@ class LXHEmoticonViewController: UIViewController {
     
     private func setupUI()
     {
-        view.backgroundColor = UIColor.init(red: 160, green: 160, blue: 160, alpha: 0.3)
+        view.backgroundColor = UIColor.init(red: 160, green: 160, blue: 160, alpha: 1.0)
         
         view.addSubview(collectionView)
         
@@ -78,7 +77,7 @@ class LXHEmoticonViewController: UIViewController {
         
         cons += NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[pageController]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
 //        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:[collectionView(\(3*width+3))]-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
-        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[collectionView]-0-[pageController(10)]-5-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
+        cons += NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[collectionView]-0-[pageController(16)]-0-[toolBar(49)]-0-|", options: NSLayoutFormatOptions.init(rawValue: 0), metrics: nil, views: dic)
         
         view.addConstraints(cons)
     }
@@ -113,10 +112,41 @@ class LXHEmoticonViewController: UIViewController {
         
         return bar
     }()
-    lazy var pageController: LXHPageController = LXHPageController.init(packages: packages)
+    lazy var pageController: LXHPageControl = {
+        let page = LXHPageControl.init(frame: CGRect.init(origin: CGPoint.zero, size: CGSize.init(width: sBounds.width, height: 16)), pages: packages)
+        page.clickPoint { [weak self](index) in
+            self?.itemCounts[(self?.currentEmos)!] = index!
+            self?.collectionView.contentOffset.x = CGFloat(index!+(self?.numsOfPagesBefore)!) * sBounds.width
+            
+        }
+        return page
+    }()
     
+    /// 记录每个表情包滑动到第几页
     var itemCounts: [NSInteger] = [0,0,0,0]
-    var numOfPages:[NSInteger] = [0,0,0,0]
+    
+    /// 记录每个表情包的总页数
+    lazy var numOfPages:[NSInteger] =
+    {
+        //最近使用的表情有几页
+        let emoticons1 = packages[0].emoticons!.count/21
+        //默认的表情有几页
+        let emoticons2 = packages[1].emoticons!.count/21
+        //emoji的表情有几页
+        let emoticons3 = packages[2].emoticons!.count/21
+        //浪小花的表情有几页
+        let emoticons4 = packages[3].emoticons!.count/21
+        
+        return [emoticons1,emoticons2,emoticons3,emoticons4]
+    }()
+    
+    /// 记录当前表情包之前的表情包有多少页
+    var numsOfPagesBefore = 0
+    
+    /// 记录当前是第几个表情包
+    var currentEmos = 0
+    
+    
     
     private lazy var emoticonLayout: LXHFlowLayout = {
         
@@ -124,10 +154,11 @@ class LXHEmoticonViewController: UIViewController {
         
         return flowlayout
     }()
-    private lazy var packages: [LXHEmoticonPackage] = LXHEmoticonPackage.loadPackage()
+    private lazy var packages: [LXHEmoticonPackage] = LXHEmoticonPackage.packages
     @objc func itemClick(item: UIBarButtonItem)
     {
         let index = item.tag - 10
+        currentEmos = index
         var indexPath:IndexPath?
         if index == 0 {
             //一般来说 点击最近表情应该是想要最近使用的表情 所以默认为第一页
@@ -136,14 +167,19 @@ class LXHEmoticonViewController: UIViewController {
             indexPath = IndexPath.init(item: itemCounts[index] * 21, section: index)
         }
         pageController.changePageControllerNums(pages:numOfPages[index] , current: itemCounts[index])
+        
         collectionView.scrollToItem(at: indexPath!, at: UICollectionViewScrollPosition.left, animated: true)
-      
+        numsOfPagesBefore = 0
+        for i in 0..<index {
+            numsOfPagesBefore += numOfPages[i]
+        }
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
 }
+/*
 class LXHPageController: UIPageControl {
     
     init(packages:[LXHEmoticonPackage]) {
@@ -183,6 +219,7 @@ class LXHPageController: UIPageControl {
         currentPage = current
     }
 }
+ */
 class LXHEmoticonCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -294,38 +331,42 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         let index: NSInteger = NSInteger(scrollView.contentOffset.x/collectionView.bounds.size.width)
-        //最近使用的表情有几页
-        let emoticons1 = packages[0].emoticons!.count/21
-        //默认的表情有几页
-        let emoticons2 = packages[1].emoticons!.count/21
-        //emoji的表情有几页
-        let emoticons3 = packages[2].emoticons!.count/21
-        //浪小花的表情有几页
-        let emoticons4 = packages[3].emoticons!.count/21
-        numOfPages = [emoticons1,emoticons2,emoticons3,emoticons4]
-        var pages = 0
+        
+        //记录滑动到当前表情的第几页表情
         var current = 0
-        if index < emoticons1 {
+        /// 记录当前表情包的总页数
+        var pages = 0
+        
+        if index < numOfPages[0] {
             //记录滑动到最近表情的第几页表情
             itemCounts[0] = index
             current = index
-            pages = emoticons1
-        }else if emoticons1 <= index && index < emoticons2+emoticons1{
+            pages = numOfPages[0]
+            currentEmos = 0
+        }else if numOfPages[0] <= index && index < numOfPages[1]+numOfPages[0]{
             //记录滑动到默认表情的第几页表情
-            itemCounts[1] = index - emoticons1
+            itemCounts[1] = index - numOfPages[0]
             current = itemCounts[1]
-            pages = emoticons2
-        }else if emoticons2 <= index && index < emoticons3+emoticons2+emoticons1{
+            pages = numOfPages[1]
+            currentEmos = 1
+        }else if numOfPages[1] <= index && index < numOfPages[2]+numOfPages[1]+numOfPages[0]{
             //记录滑动到emoji表情的第几页表情
-            itemCounts[2] = index - emoticons1 - emoticons2
+            itemCounts[2] = index - numOfPages[0] - numOfPages[1]
             current = itemCounts[2]
-            pages = emoticons3
-        }else if emoticons3 <= index && index < emoticons4+emoticons3+emoticons2+emoticons1{
+            pages = numOfPages[2]
+            currentEmos = 2
+        }else if numOfPages[2] <= index && index < numOfPages[3]+numOfPages[2]+numOfPages[1]+numOfPages[0]{
             //记录滑动到浪小花表情的第几页表情
-            itemCounts[3] = index - emoticons1 - emoticons2 - emoticons3
+            itemCounts[3] = index - numOfPages[0] - numOfPages[1] - numOfPages[2]
             current = itemCounts[3]
-            pages = emoticons4
+            pages = numOfPages[3]
+            currentEmos = 3
+        }
+        numsOfPagesBefore = 0
+        for i in 0..<currentEmos {
+            numsOfPagesBefore += numOfPages[i]
         }
         pageController.changePageControllerNums(pages: pages, current: current)
+        
     }
 }
