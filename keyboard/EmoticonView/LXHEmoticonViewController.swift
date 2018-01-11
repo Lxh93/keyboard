@@ -21,23 +21,25 @@ class LXHEmoticonViewController: UIViewController {
     
     var emoticonBlock: (_ emoticon:LXHEmoticon)->()
     
-    var times = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if packages[0].recentlyEmos?.count == 0{
-            if collectionView.contentOffset.x == 0{
-                    
-                collectionView.contentOffset.x += collectionView.bounds.size.width
-            }
-        }
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        if packages[0].recentlyEmos?.count == 0{
+//            if collectionView.contentOffset.x == 0{
+//
+//                collectionView.contentOffset.x += collectionView.bounds.size.width
+//                pageController.changePageControllerNums(pages: numOfPages[1], current: 0)
+//                currentItem.isEnabled = true
+//                currentItem = itemBtns[1]
+//                currentItem.isEnabled = false
+//            }
+//        }
+//    }
     
     
     
@@ -88,6 +90,7 @@ class LXHEmoticonViewController: UIViewController {
         clv.showsHorizontalScrollIndicator = false
         return clv
     }()
+    
     private lazy var toolBar:UIToolbar = {
         let bar = UIToolbar()
         bar.tintColor = UIColor.darkGray
@@ -329,7 +332,19 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
         
         return cell
     }
-   
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if packages[0].recentlyEmos?.count == 0{
+            if collectionView.contentOffset.x == 0{
+                
+                collectionView.contentOffset.x += collectionView.bounds.size.width
+                pageController.changePageControllerNums(pages: numOfPages[1], current: 0)
+                currentItem.isEnabled = true
+                currentItem = itemBtns[1]
+                currentItem.isEnabled = false
+            }
+        }
+        
+    }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let emoticon = packages[indexPath.section].emoticons![indexPath.item]
