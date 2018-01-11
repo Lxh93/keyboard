@@ -39,7 +39,8 @@ class LXHEmoTextView: UITextView {
             //恢复光标的所在位置
             self.attributedText = strM
             self.selectedRange = NSRange.init(location: range.location+1, length: 0)
-            
+            //由于输入表情时不会自动触发该代理方法，所以自己调
+            delegate?.textViewDidChange!(self)
         }
         
         if emoticon.isRemoveButton {
