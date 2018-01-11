@@ -31,14 +31,11 @@ class LXHEmoticonViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-//        if times == 0 {
-            if packages[0].recentlyEmos?.count == 0{
-                if collectionView.contentOffset.x == 0{
+        if packages[0].recentlyEmos?.count == 0{
+            if collectionView.contentOffset.x == 0{
                     
-                    collectionView.contentOffset.x += collectionView.bounds.size.width
-                }
-//            }
-//            times = 1
+                collectionView.contentOffset.x += collectionView.bounds.size.width
+            }
         }
     }
     
@@ -100,8 +97,21 @@ class LXHEmoticonViewController: UIViewController {
         
         for package in packages
         {
-            let item = UIBarButtonItem.init(title: package.group_name_cn, style: UIBarButtonItemStyle.plain, target: self, action: #selector(itemClick(item:)))
-            item.tag = 10 + index
+            let btn = UIButton.init(type: .custom)
+            
+            btn.setBackgroundImage(UIImage.init(named: "compose_app_default"), for: .disabled)
+            btn.addTarget(self, action: #selector(itemClick(item:)), for: .touchUpInside)
+            btn.setTitle(package.group_name_cn, for: .normal)
+            
+            btn.setTitleColor(UIColor.lightGray, for: UIControlState.normal)
+            btn.tag = 10 + index
+            if index == 0{
+                btn.isEnabled = false
+                currentItem = btn
+            }
+            itemBtns.append(btn)
+            let item = UIBarButtonItem.init(customView: btn)
+            
             index += 1
             items.append(item)
             items.append(UIBarButtonItem.init(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil))
@@ -121,6 +131,12 @@ class LXHEmoticonViewController: UIViewController {
         }
         return page
     }()
+    
+    /// 记录当前的点击的表情包
+    var currentItem = UIButton()
+    
+    /// 保存创建items的btn
+    var itemBtns = [UIButton]()
     
     /// 记录每个表情包滑动到第几页
     var itemCounts: [NSInteger] = [0,0,0,0]
@@ -155,8 +171,11 @@ class LXHEmoticonViewController: UIViewController {
         return flowlayout
     }()
     private lazy var packages: [LXHEmoticonPackage] = LXHEmoticonPackage.packages
-    @objc func itemClick(item: UIBarButtonItem)
+    @objc func itemClick(item: UIButton)
     {
+        currentItem.isEnabled = true
+        currentItem = item
+        item.isEnabled = false
         let index = item.tag - 10
         currentEmos = index
         var indexPath:IndexPath?
@@ -261,6 +280,7 @@ class LXHEmoticonCell: UICollectionViewCell {
         btn.isUserInteractionEnabled = false
         btn.backgroundColor = UIColor.clear
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 32)
+    
         return btn
     }()
     required init?(coder aDecoder: NSCoder) {
@@ -366,7 +386,14 @@ extension LXHEmoticonViewController:UICollectionViewDataSource,UICollectionViewD
         for i in 0..<currentEmos {
             numsOfPagesBefore += numOfPages[i]
         }
+        if currentItem != itemBtns[currentEmos] {
+            currentItem.isEnabled = true
+            currentItem = itemBtns[currentEmos]
+            currentItem.isEnabled = false
+        }
+        
         pageController.changePageControllerNums(pages: pages, current: current)
+        
         
     }
 }
